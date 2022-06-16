@@ -1,16 +1,29 @@
 const button = document.querySelector("button");
-let firstName = document.querySelector("#name");
+const input = document.querySelector("#name");
+let data = []; 
 
-let url = `https://api.agify.io?name=anais`
-
-button.addEventListener("click", () => {
-    fetch(url)
-        .then(response => response.text())
-        .then(text => {
-            let div = document.body.appendChild(document.createElement('div'))
-            div.innerText = text
-        })
+async function fetchFirstName (name) {
+    await fetch(`https://api.agify.io?name=${name}`)
+        .then(response => response.json())
+        .then(array => (data = array))
         .catch(error => {
             console.log('This is an error !', error)
         })
+
+}
+
+fetchFirstName();
+
+function firstNameDisplay () {
+    console.log(data)
+    let ageOfFirstName = document.body.appendChild(document.createElement('div'))
+    ageOfFirstName.innerText = data.age + " ans"
+
+}
+
+input.addEventListener('input', (e) => {
+    fetchFirstName(e.target.value);
 })
+
+button.addEventListener("click", firstNameDisplay)
+
